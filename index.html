@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manish Cafe | Coffee in Ferozepur</title>
+  <style>
+    :root {
+      --bg: #fff8f1;
+      --card: #ffffff;
+      --text: #2e1f14;
+      --accent: #8b4a2b;
+      --accent2: #d68c4a;
+      --muted: #6f5749;
+      --shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, #fff5ea, #ffe7ca);
+      line-height: 1.6;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: rgba(255, 248, 241, 0.95);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .brand {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent2);
+    }
+
+    .hero-wrap {
+      position: relative;
+      overflow: hidden;
+      height: 85vh;
+      min-height: 560px;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1s ease;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .slide.active {
+      opacity: 1;
+    }
+
+    .slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(0,0,0,0.7), rgba(0,0,0,0.25));
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      padding: 24px;
+    }
+
+    .hero-box {
+      max-width: 700px;
+      background: rgba(255,255,255,0.14);
+      padding: 30px;
+      border-radius: 24px;
+      backdrop-filter: blur(6px);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-box h1 {
+      font-size: 3rem;
+      margin: 0 0 12px;
+    }
+
+    .hero-box p {
+      font-size: 1.08rem;
+      margin: 0 0 18px;
+      color: #f9ebdb;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--accent2), #f1a854);
+      color: white;
+      text-decoration: none;
+      border-radius: 999px;
+      font-weight: 700;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .carousel-controls {
+      position: absolute;
+      inset: auto 20px 20px 20px;
+      z-index: 3;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .control-btn {
+      border: none;
+      background: rgba(255,255,255,0.85);
+      color: var(--accent);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
+    .dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.65);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .dot.active {
+      background: white;
+      transform: scale(1.15);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    section {
+      padding: 50px 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      color: var(--accent);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 16px;
+    }
+
+    .menu-item {
+      background: #fffaf4;
+      border: 1px solid #f2e1cf;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .menu-item h3 {
+      margin: 8px 0 6px;
+      color: var(--accent);
+    }
+
+    .menu-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .menu-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid #f0e4d8;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .contact-box {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px 20px 40px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+      .grid, .menu-grid { grid-template-columns: 1fr; }
+      .hero-box h1 { font-size: 2.2rem; }
+      nav { flex-direction: column; gap: 10px; }
+      .hero-wrap { height: 72vh; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="brand">Shaina Cafe</div>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#menu">Menu</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <header class="hero-wrap" id="home">
+    <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1400&q=80');"></div>
+    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1400&q=80');"></div>
+    <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&w=1400&q=80');"></div>
+
+    <div class="hero-content">
+      <div class="hero-box">
+        <h1>Welcome to Shaina Cafe</h1>
+        <p>Fresh coffee, cozy vibes, and warm hospitality in the heart of Ferozepur.</p>
+        <a class="btn" href="#menu">Explore Our Menu</a>
+      </div>
+    </div>
+
+    <div class="carousel-controls">
+      <button class="control-btn" onclick="changeSlide(-1)">❮</button>
+      <div class="dots">
+        <button class="dot active" onclick="showSlide(0)"></button>
+        <button class="dot" onclick="showSlide(1)"></button>
+        <button class="dot" onclick="showSlide(2)"></button>
+      </div>
+      <button class="control-btn" onclick="changeSlide(1)">❯</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="grid" id="about">
+      <div class="card">
+        <h2>About Our Cafe</h2>
+        <p> Shaina Cafe is a cozy coffee shop in Ferozepur where friends gather, students work, and every cup is brewed with care. We offer comfort, warmth, and a modern café experience with classic flavors.</p>
+      </div>
+      <div class="card">
+        <h2>Why Guests Love Us</h2>
+        <ul class="menu-list">
+          <li><span>Freshly brewed coffee</span><strong>⭐ 4.9</strong></li>
+          <li><span>Relaxing seating</span><strong>☕ Cozy</strong></li>
+          <li><span>Fast service</span><strong>⚡ Quick</strong></li>
+          <li><span>Delicious snacks</span><strong>🥐 Tasty</strong></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="menu">
+      <h2 style="color: var(--accent); text-align: center;">Our Signature Menu</h2>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <h3>Espresso</h3>
+          <p>Rich and bold coffee shot.</p>
+          <strong>₹80</strong>
+        </div>
+        <div class="menu-item">
+          <h3>Cappuccino</h3>
+          <p>Perfect blend of espresso and foam.</p>
+          <strong>₹120</strong>
+        </div>
+        <div class="menu-item">
+          <h3>Cold Coffee</h3>
+          <p>Icy, creamy, and refreshing.</p>
+          <strong>₹100</strong>
+        </div>
+        <div class="menu-item">
+          <h3>Hot Chocolate</h3>
+          <p>Silky smooth and sweet.</p>
+          <strong>₹110</strong>
+        </div>
+        <div class="menu-item">
+          <h3>Sandwich</h3>
+          <p>Grilled and packed with flavor.</p>
+          <strong>₹90</strong>
+        </div>
+        <div class="menu-item">
+          <h3>Pastry</h3>
+          <p>Soft, fresh, and delicious.</p>
+          <strong>₹70</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="contact">
+      <h2>Visit Shaina Cafe</h2>
+      <div class="contact-box">
+        <div>
+          <p><strong>Location:</strong> Ferozepur, Punjab</p>
+          <p><strong>Phone:</strong> +91 98765 43210</p>
+        </div>
+        <div>
+          <p><strong>Hours:</strong> Daily from 8:00 AM to 10:00 PM</p>
+          <p><strong>Special Offer:</strong> Buy 2 coffees, get 1 pastry free!</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Crafted with comfort and coffee for the people of Ferozepur.</p>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    let currentSlide = 0;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+      currentSlide = index;
+    }
+
+    function changeSlide(step) {
+      const next = (currentSlide + step + slides.length) % slides.length;
+      showSlide(next);
+    }
+
+    setInterval(() => changeSlide(1), 4500);
+  </script>
+</body>
+</html>
